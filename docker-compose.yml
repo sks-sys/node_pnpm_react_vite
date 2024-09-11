@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend/pnpm-project  # Path to your backend Dockerfile
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "4000:3000"  # Map port 3000 on host to port 3000 in the container
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend/vite-project  # Path to your frontend Dockerfile
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "5000:5173"  # Map port 5000 on host to port 5173 in the container
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+networks:
+  app-network:
+    driver: bridge
